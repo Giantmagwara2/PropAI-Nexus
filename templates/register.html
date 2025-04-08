@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register - PropAI Nexus</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <h1>Register</h1>
+    <form method="POST" action="{{ url_for('register') }}">
+        <label>Username:</label>
+        <input type="text" name="username" required><br>
+        <label>Password:</label>
+        <input type="password" name="password" required><br>
+        <!-- For simplicity, role selection can be hidden or set by default -->
+        <input type="hidden" name="role" value="user">
+        <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+</body>
+</html>

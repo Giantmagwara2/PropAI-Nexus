@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - PropAI Nexus</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <h1>Dashboard</h1>
+    <p>Welcome, {{ user.username }}!</p>
+    <h2>Recent Properties</h2>
+    <ul>
+    {% for prop in properties %}
+        <li>
+            <strong>{{ prop['title'] }}</strong> - ${{ prop['price'] }}<br>
+            {{ prop['address'] }}<br>
+            Listed on: {{ prop['timestamp'] }}
+        </li>
+    {% endfor %}
+    </ul>
+    <a href="{{ url_for('logout') }}">Logout</a>
+</body>
+</html>

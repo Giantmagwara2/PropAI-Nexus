@@ -1,0 +1,33 @@
+PropAI_Nexus/
+├── api/
+│   ├── models/
+│   │   └── rental_yield_predictor.json    # Pre-trained model(s)
+│   ├── routes/
+│   │   ├── rental_yield.py                # Rental yield prediction endpoints
+│   │   ├── market_sentiment.py            # Market sentiment analysis endpoints
+│   │   ├── knowledge_base.py              # API for the knowledge base
+│   │   └── property_evaluation.py         # Unified property evaluation endpoints
+├── agents/
+│   ├── market_analysis.py                 # Market Analysis Agent (publishes market insights via Redis)
+│   └── customer_support.py              # Customer Support Agent (conversational AI, integrated with evaluation agent)
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── RentalYieldPrediction.js   # React component for rental yield predictions
+│   │   │   ├── MarketSentiment.js           # React component for sentiment analysis
+│   │   │   └── ChatSupport.js               # React component for customer support
+│   │   ├── context/
+│   │   │   └── ThemeContext.js              # Dark mode & theming context
+│   │   ├── App.js                           # Main React application integrating components
+│   │   └── index.js                         # React entry point
+│   ├── public/
+│   │   └── index.html                       # HTML template
+│   └── package.json
+├── static/
+│   └── css/
+│       └── main.css                         # Global CSS, including dark mode styles
+├── config.py                                # Configuration file for API keys and endpoints
+├── app.py                                   # Main Flask application integrating all API routes
+├── app.yaml                                 # Google App Engine configuration
+├── requirements.txt                         # Python dependencies
+└── README.md
