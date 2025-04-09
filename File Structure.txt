@@ -1,33 +1,69 @@
 PropAI_Nexus/
-├── api/
+│
+├── api/                                     # Flask API backend
+│   ├── __init__.py
 │   ├── models/
-│   │   └── rental_yield_predictor.json    # Pre-trained model(s)
-│   ├── routes/
-│   │   ├── rental_yield.py                # Rental yield prediction endpoints
-│   │   ├── market_sentiment.py            # Market sentiment analysis endpoints
-│   │   ├── knowledge_base.py              # API for the knowledge base
-│   │   └── property_evaluation.py         # Unified property evaluation endpoints
-├── agents/
-│   ├── market_analysis.py                 # Market Analysis Agent (publishes market insights via Redis)
-│   └── customer_support.py              # Customer Support Agent (conversational AI, integrated with evaluation agent)
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── RentalYieldPrediction.js   # React component for rental yield predictions
-│   │   │   ├── MarketSentiment.js           # React component for sentiment analysis
-│   │   │   └── ChatSupport.js               # React component for customer support
-│   │   ├── context/
-│   │   │   └── ThemeContext.js              # Dark mode & theming context
-│   │   ├── App.js                           # Main React application integrating components
-│   │   └── index.js                         # React entry point
+│   │   └── rental_yield_predictor.json      # Serialized ML model(s)
+│   ├── routes/                              # Flask Blueprints for each feature
+│   │   ├── __init__.py
+│   │   ├── rental_yield.py
+│   │   ├── market_sentiment.py
+│   │   ├── knowledge_base.py
+│   │   └── property_evaluation.py
+│   ├── services/                            # ML model loaders, logic, and processing
+│   │   ├── rental_yield_service.py
+│   │   ├── sentiment_analysis_service.py
+│   │   └── property_evaluation_service.py
+│   └── utils/
+│       └── helpers.py                        # Common utility functions
+│
+├── agents/                                  # AI & LLM-powered agents
+│   ├── __init__.py
+│   ├── market_analysis.py                   # Autonomous market insights agent
+│   ├── customer_support.py                  # LLM-based support agent (ChatboxAI/Manus AI)
+│   └── property_advisor.py                  # Agent to recommend investment opportunities
+│
+├── ai_core/                                 # Core ML & LLM orchestration logic
+│   ├── __init__.py
+│   ├── embeddings.py                        # Vector embeddings & semantic search (e.g. FAISS)
+│   ├── llm_interface.py                     # OpenAI, Claude, Gemini APIs
+│   ├── tools/
+│   │   ├── browser_tool.py
+│   │   ├── calculator_tool.py
+│   │   └── property_scraper.py              # Web scraper tool for property listings
+│   └── prompts/
+│       └── advisor_prompt.txt               # System prompt templates for agents
+│
+├── frontend/                                # React + Tailwind client app
 │   ├── public/
-│   │   └── index.html                       # HTML template
+│   │   └── index.html
+│   ├── src/
+│   │   ├── assets/
+│   │   ├── components/
+│   │   │   ├── RentalYieldPrediction.jsx
+│   │   │   ├── MarketSentiment.jsx
+│   │   │   ├── ChatSupport.jsx
+│   │   │   └── Dashboard.jsx
+│   │   ├── context/
+│   │   │   └── ThemeContext.js
+│   │   ├── layouts/
+│   │   │   └── MainLayout.jsx
+│   │   ├── pages/
+│   │   │   ├── Home.jsx
+│   │   │   └── Portfolio.jsx
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   ├── tailwind.config.js
+│   ├── postcss.config.js
 │   └── package.json
+│
 ├── static/
 │   └── css/
-│       └── main.css                         # Global CSS, including dark mode styles
-├── config.py                                # Configuration file for API keys and endpoints
-├── app.py                                   # Main Flask application integrating all API routes
-├── app.yaml                                 # Google App Engine configuration
+│       └── main.css
+│
+├── config.py                                # Config class (env vars, API keys, etc.)
+├── app.py                                   # Flask app entrypoint
+├── app.yaml                                 # Google App Engine deployment config
 ├── requirements.txt                         # Python dependencies
+├── .env                                     # Environment variables (ignored by git)
 └── README.md
