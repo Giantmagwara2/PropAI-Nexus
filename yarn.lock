@@ -165,3 +165,8 @@ proxy-from-env@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/proxy-from-env/-/proxy-from-env-1.1.0.tgz#e102f16ca355424865755d2c9e8ea4f24d58c3e2"
   integrity sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==
+
+uwsgi@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/uwsgi/-/uwsgi-0.0.1.tgz#736ec7e6e85bef55fe67a65d0846ce8067aa0a2f"
+  integrity sha512-xsBGtPEdjS7vsgyPd2XRryw893lP3SnGpQBhYNop9d0pa4oEjFbDQunbR2vqGsy5635BHVBDOahnC1K1+ljVYQ==
