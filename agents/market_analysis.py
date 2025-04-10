@@ -1,10 +1,14 @@
 # agents/market_analysis.py
 
+from flask import Blueprint, request, jsonify
 import redis
 import json
 from datetime import datetime
 
-# Connect to Redis (ensure Redis server is running)
+# Initialize Flask Blueprint
+market_agent = Blueprint('market_agent', __name__)
+
+# Configure Redis
 r = redis.Redis(host='localhost', port=6379, db=0)
 
 def fetch_economic_data():
@@ -30,17 +34,23 @@ def fetch_news_data():
         "timestamp": datetime.utcnow().isoformat()
     }
 
-def publish_market_insights():
+@market_agent.route('/update', methods=['POST'])
+def update_market_data():
     """
-    Combine and publish market data to Redis.
+    HTTP endpoint to update market data.
     """
-    economic_data = fetch_economic_data()
-    news_data = fetch_news_data()
-    market_data = {**economic_data, **news_data}
-    
-    # Publish market data to a Redis channel
-    r.publish('market_data_channel', json.dumps(market_data))
-    print("Market data published:", market_data)
-    
-    # Update the knowledge base key
-    r.set('latest_market_data', json.dumps(market_data))
+    try:
+        # Fetch data
+        economic_data = fetch_economic_data()
+        news_data = fetch_news_data()
+        
+        # Combine data
+        market_data = {**economic_data, **news_data}
+        
+        # Publish to Redis
+        r.publish('market_data_channel', json.dumps(market_data))
+        r.set('latest_market_data', json.dumps(market_data))
+        
+        return jsonify({"message": "Market data updated", "data": market_data}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
