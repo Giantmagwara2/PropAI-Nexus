@@ -157,6 +157,10 @@ mime-types@^2.1.12:
   dependencies:
     mime-db "1.52.0"
 
+"nvm@https://github.com/nvm-sh/nvm.git":
+  version "0.40.2"
+  resolved "https://github.com/nvm-sh/nvm.git#99352a64d25ce27d49ff6a449663ce3d7c12e5b5"
+
 proxy-from-env@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/proxy-from-env/-/proxy-from-env-1.1.0.tgz#e102f16ca355424865755d2c9e8ea4f24d58c3e2"
