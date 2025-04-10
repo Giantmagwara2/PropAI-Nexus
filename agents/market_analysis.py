@@ -4,6 +4,8 @@ from flask import Blueprint, request, jsonify
 import redis
 import json
 from datetime import datetime
+import requests
+import logging
 
 # Initialize Flask Blueprint
 market_agent = Blueprint('market_agent', __name__)
