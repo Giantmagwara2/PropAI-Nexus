@@ -13,3 +13,4 @@ class GNN(torch.nn.Module):
         x = self.conv1(x, edge_index).relu()
         x = self.conv2(x, edge_index)
         return x
+
