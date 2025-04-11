@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@stripe/stripe-js": "^7.0.0",
     "axios": "^1.8.4",
     "nvm": "https://github.com/nvm-sh/nvm.git",
     "uwsgi": "^0.0.1"
