@@ -1,0 +1,3 @@
+from gnn_valuation import GNN
+from torch_geometric.data import Data
+# Load and prepare your graph data here...
