@@ -1,23 +1,38 @@
-// /frontend/src/App.js
 import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './pages/Home';
+import PageTransition from './components/PageTransition';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
-import NavBar from './components/NavBar';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function AppContent() {
-  const { theme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'}`}>
-      <NavBar /> {/* Use the new NavBar */}
-      
-      <main className="p-4">
-        <Home />
-      </main>
+      <header className="p-4 flex justify-between items-center">
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">PropAI Nexus Dashboard</h1>
+        <button
+          onClick={toggleTheme}
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+        >
+          Toggle {theme === 'light' ? 'Dark' : 'Light'} Mode
+        </button>
+      </header>
 
-      {/* Toast Container with Dynamic Dark/Light Mode Styling */}
+      <Router>
+        <Switch>
+          <Route path="/" exact>
+            <PageTransition>
+              <Home />
+            </PageTransition>
+          </Route>
+          {/* You can add more routes here as you add new pages */}
+        </Switch>
+      </Router>
+
+      {/* Toast Container */}
       <ToastContainer
         position="top-right"
         autoClose={4000}
@@ -33,8 +48,8 @@ function AppContent() {
           borderRadius: '10px',
           background: theme === 'dark' ? '#1f2937' : '#ffffff',
           color: theme === 'dark' ? '#f9fafb' : '#1f2937',
-          border: '1px solid #3b82f6',
-          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
+          border: '1px solid #3b82f6', 
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
         }}
       />
     </div>
