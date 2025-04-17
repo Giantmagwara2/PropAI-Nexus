@@ -7616,7 +7616,7 @@ prop-types@^15.8.1:
   version "1.0.0"
   dependencies:
     axios "^1.2.0"
-    propai-nexus-frontend "file:./../../../../Users/Tebogo/AppData/Local/Yarn/Cache/v6/npm-propai-nexus-frontend-1.0.0-cb775719-fb30-41c9-ba48-1f081bce7ff8-1744892020303/node_modules/propai-nexus-frontend"
+    propai-nexus-frontend "file:../../../home/codespace/.cache/yarn/v6/npm-propai-nexus-frontend-1.0.0-c38d1388-2481-4c93-819b-b8a8ed7fb491-1744892018087/node_modules/propai-nexus-frontend"
     react "^19.1.0"
     react-dom "^19.1.0"
     react-loader-spinner "^6.1.6"
