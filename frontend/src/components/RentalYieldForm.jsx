@@ -1,11 +1,11 @@
-// /frontend/src/components/PredictionForm.jsx
+// /frontend/src/components/RentalYieldForm.jsx
 import React, { useState } from 'react';
 import usePrediction from '../hooks/usePrediction';
 import Loader from './Loader';
 import { notifySuccess, notifyError } from '../utils/toast';
 
-export default function PredictionForm() {
-  const { data, loading, error, fetchPrediction } = usePrediction('/api/predictions/property');
+export default function RentalYieldForm() {
+  const { data, loading, error, fetchPrediction } = usePrediction('/api/rental/yield');
   const [formData, setFormData] = useState({
     size: 0,
     bedrooms: 0,
@@ -24,15 +24,15 @@ export default function PredictionForm() {
   const handlePredict = async () => {
     try {
       await fetchPrediction(formData);
-      notifySuccess('Prediction successful!');
+      notifySuccess('Rental yield prediction successful!');
     } catch {
-      notifyError('Prediction failed!');
+      notifyError('Rental yield prediction failed!');
     }
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded shadow-md">
-      <h2 className="text-2xl font-bold mb-4">Predict Property Value</h2>
+    <div className="max-w-md mx-auto p-6 bg-white rounded shadow-md mt-8">
+      <h2 className="text-2xl font-bold mb-4">Predict Rental Yield</h2>
 
       <div className="space-y-4">
         <input type="number" name="size" placeholder="Size (sq ft)" value={formData.size} onChange={handleChange} className="input" />
@@ -52,7 +52,7 @@ export default function PredictionForm() {
         {data && (
           <div className="mt-4 text-center">
             <p className="text-lg font-semibold">
-              Predicted Value: {data.predicted_value} {data.currency}
+              Predicted Rental Yield: {data.predicted_rental_yield_percent}%
             </p>
           </div>
         )}
