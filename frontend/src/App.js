@@ -1,28 +1,27 @@
+// /frontend/src/App.js
 import React from 'react';
-import RentalYieldPrediction from './components/RentalYieldPrediction';
-import MarketSentiment from './components/MarketSentiment';
+import Home from './pages/Home';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
+import NavBar from './components/NavBar'; // 👈 Import the NavBar
 
-function App() {
-  const { theme, toggleTheme } = useTheme();
+function AppContent() {
+  const { theme } = useTheme();
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
-      <header className="p-4 flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">PropAI Nexus Dashboard</h1>
-        <button
-          onClick={toggleTheme}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-        >
-          Toggle {theme === 'light' ? 'Dark' : 'Light'} Mode
-        </button>
-      </header>
+    <div className={`min-h-screen transition-colors duration-300 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'}`}>
+      <NavBar /> {/* 👈 Use NavBar here */}
+      
       <main className="p-4">
-        <RentalYieldPrediction />
-        <MarketSentiment />
+        <Home /> {/* Home contains Prediction + Rental Yield forms */}
       </main>
     </div>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
+  );
+}

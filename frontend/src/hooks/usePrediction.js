@@ -11,12 +11,16 @@ const usePrediction = (endpoint) => {
     setLoading(true);
     try {
       const response = await axios.post(endpoint, formData, {
-        headers: { 'x-api-key': process.env.REACT_APP_API_KEY },
+        headers: {
+          'x-api-key': process.env.REACT_APP_API_KEY, // Secure API Key
+          'Content-Type': 'application/json',
+        },
       });
       setData(response.data);
       setError(null);
     } catch (err) {
-      setError(err.response?.data || 'Server Error');
+      console.error('Prediction API Error:', err);
+      setError(err.response?.data?.detail || 'Server Error');
       setData(null);
     } finally {
       setLoading(false);
