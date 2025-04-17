@@ -1,14 +1,8 @@
-# /backend/tasks/__init__.py
+# /backend/tasks/log_prediction_task.py
+
 import json
 from datetime import datetime
 from pathlib import Path
-# /backend/tasks/__init__.py
-
-from .log_prediction_task import log_prediction
-
-__all__ = [
-    "log_prediction",
-]
 
 # Log file path
 LOG_FILE = Path("logs/predictions.log")

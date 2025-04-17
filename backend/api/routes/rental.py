@@ -1,10 +1,17 @@
 # /backend/routes/rental.py
+
 from fastapi import APIRouter, Depends, HTTPException, Request, BackgroundTasks
 from pydantic import BaseModel
-from models.predictive_model import predict_rental_yield
+from backend.models.rental_yield_agent import RentalYieldAgent
 from middleware.auth import verify_api_key
 from localization import get_localized_message
 from tasks import log_prediction
+
+import joblib
+
+# Load model and setup agent
+model = joblib.load('rental_yield_model.pkl')
+rental_agent = RentalYieldAgent(model)
 
 router = APIRouter()
 
@@ -25,19 +32,25 @@ async def rental_yield_prediction(
 ):
     try:
         features = property.dict()
-        predicted_yield = predict_rental_yield(features)
 
-        # Background task to log prediction
+        # Predict rental yield using agent
+        predicted_yield = rental_agent.predict(features)
+
+        result = {
+            "predicted_rental_yield_percent": round(predicted_yield, 2),
+            "currency": features.get("currency", "USD"),
+            "country": features.get("country", "US")
+        }
+
+        # Background logging
         background_tasks.add_task(log_prediction, {
             "input": features,
-            "output": predicted_yield
+            "output": result
         })
 
-        return {
-            "predicted_rental_yield_percent": round(predicted_yield, 2)
-        }
-    
-    except Exception as e:
+        return result
+
+    except Exception:
         lang = request.headers.get("Accept-Language", "en").split(",")[0]
         message = get_localized_message(lang, 'internal_server_error')
         raise HTTPException(status_code=500, detail=message)
