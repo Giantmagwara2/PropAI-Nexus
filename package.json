@@ -2,7 +2,9 @@
   "dependencies": {
     "@stripe/stripe-js": "^7.0.0",
     "axios": "^1.8.4",
+    "i18next": "^24.2.3",
     "nvm": "https://github.com/nvm-sh/nvm.git",
+    "react-i18next": "^15.4.1",
     "uwsgi": "^0.0.1"
   }
 }
