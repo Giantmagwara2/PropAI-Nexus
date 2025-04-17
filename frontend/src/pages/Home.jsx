@@ -8,8 +8,6 @@ import RentalYieldForm from '../components/RentalYieldForm';
 import ScrollButton from '../components/ScrollButton'; // 👈🏽 Add at the top
 import { useTheme } from '../context/ThemeContext';
 
-
-
 export default function Home() {
   const { scrollY } = useScroll();
   const yOffset = useTransform(scrollY, [0, 500], [0, -100]);
