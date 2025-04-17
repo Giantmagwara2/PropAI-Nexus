@@ -1,3 +1,4 @@
+# /backend/routes/prediction.py
 from fastapi import APIRouter, Depends, HTTPException, Request, BackgroundTasks
 from pydantic import BaseModel
 from models.predictive_model import predict_property_value
@@ -24,17 +25,17 @@ async def property_prediction(
 ):
     try:
         features = property.dict()
-        predicted_value = predict_property_value(features)
+        result = await predict_property_value(property)  # Async call now
 
-        # Add logging in background
+        # Background logging
         background_tasks.add_task(log_prediction, {
             "input": features,
-            "output": predicted_value
+            "output": result
         })
 
-        return {"predicted_value": predicted_value, "currency": property.currency}
+        return result
     
-    except Exception as e:
+    except Exception:
         lang = request.headers.get("Accept-Language", "en").split(",")[0]
         message = get_localized_message(lang, 'internal_server_error')
         raise HTTPException(status_code=500, detail=message)
