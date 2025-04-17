@@ -8,13 +8,12 @@ import 'react-toastify/dist/ReactToastify.css';
 export const notifySuccess = (message) => {
   toast.success(message, {
     position: 'top-right',
-    autoClose: 5000, // Adjust auto-close time
-    hideProgressBar: false, // Optionally display progress bar
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: 'colored', // Add custom theme if desired
+    style: {
+      backgroundColor: '#16a34a', // Tailwind green-600
+      color: '#ffffff',
+      borderRadius: '8px',
+      border: '1px solid #22c55e', // Tailwind green-500
+    },
   });
 };
 
@@ -24,13 +23,12 @@ export const notifySuccess = (message) => {
 export const notifyError = (message) => {
   toast.error(message, {
     position: 'top-right',
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: 'colored',
+    style: {
+      backgroundColor: '#dc2626', // Tailwind red-600
+      color: '#ffffff',
+      borderRadius: '8px',
+      border: '1px solid #ef4444', // Tailwind red-500
+    },
   });
 };
 
@@ -40,12 +38,11 @@ export const notifyError = (message) => {
 export const notifyInfo = (message) => {
   toast.info(message, {
     position: 'top-right',
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: 'colored',
+    style: {
+      backgroundColor: '#2563eb', // Tailwind blue-600
+      color: '#ffffff',
+      borderRadius: '8px',
+      border: '1px solid #3b82f6', // Tailwind blue-500
+    },
   });
 };
