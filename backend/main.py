@@ -7,8 +7,8 @@ from middleware.auth import verify_api_key
 from localization import get_localized_message
 
 from payments.stripe_payment import stripe_router
-from routes.prediction import router as prediction_router
-from routes.rental import router as rental_router
+from backend.api.routes.prediction import router as prediction_router
+from backend.api.routes.rental import router as rental_router
 
 # Initialize FastAPI app
 app = FastAPI(
