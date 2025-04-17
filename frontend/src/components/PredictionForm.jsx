@@ -1,64 +1,77 @@
-// /frontend/src/components/PredictionForm.jsx
-import React, { useState } from 'react';
-import usePrediction from '../hooks/usePrediction';
-import Loader from './Loader';
-import { notifySuccess, notifyError } from '../utils/toast';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { notifyError, notifySuccess } from '../lib/toast';
 
 export default function PredictionForm() {
-  const { data, loading, error, fetchPrediction } = usePrediction('/api/predictions/property');
-  const [formData, setFormData] = useState({
-    size: 0,
-    bedrooms: 0,
-    bathrooms: 0,
-    location: '',
-    age: 0,
-    country: 'US',
-    currency: 'USD',
-  });
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handlePredict = async () => {
-    try {
-      await fetchPrediction(formData);
-      notifySuccess('Prediction successful!');
-    } catch {
-      notifyError('Prediction failed!');
-    }
+  const onSubmit = (data) => {
+    console.log(data);
+    notifySuccess('Property prediction submitted successfully!');
+    reset();
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded shadow-md">
-      <h2 className="text-2xl font-bold mb-4">Predict Property Value</h2>
-
-      <div className="space-y-4">
-        <input type="number" name="size" placeholder="Size (sq ft)" value={formData.size} onChange={handleChange} className="input" />
-        <input type="number" name="bedrooms" placeholder="Bedrooms" value={formData.bedrooms} onChange={handleChange} className="input" />
-        <input type="number" name="bathrooms" placeholder="Bathrooms" value={formData.bathrooms} onChange={handleChange} className="input" />
-        <input type="text" name="location" placeholder="Location" value={formData.location} onChange={handleChange} className="input" />
-        <input type="number" name="age" placeholder="Property Age" value={formData.age} onChange={handleChange} className="input" />
-        <input type="text" name="country" placeholder="Country (e.g., US)" value={formData.country} onChange={handleChange} className="input" />
-        <input type="text" name="currency" placeholder="Currency (e.g., USD)" value={formData.currency} onChange={handleChange} className="input" />
-
-        <button onClick={handlePredict} disabled={loading} className="btn-primary w-full">
-          {loading ? 'Predicting…' : 'Predict'}
-        </button>
-
-        {loading && <Loader />}
-
-        {data && (
-          <div className="mt-4 text-center">
-            <p className="text-lg font-semibold">
-              Predicted Value: {data.predicted_value} {data.currency}
-            </p>
-          </div>
-        )}
-
-        {error && notifyError(error)}
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      {/* Size */}
+      <div>
+        <label className="block mb-1 font-medium">Property Size (sqft)</label>
+        <input
+          type="number"
+          {...register('size', { required: 'Size is required', min: { value: 1, message: 'Size must be positive' } })}
+          className="input"
+        />
+        {errors.size && <p className="text-red-500 text-sm">{errors.size.message}</p>}
       </div>
-    </div>
+
+      {/* Bedrooms */}
+      <div>
+        <label className="block mb-1 font-medium">Bedrooms</label>
+        <input
+          type="number"
+          {...register('bedrooms', { required: 'Bedrooms required', min: { value: 1, message: 'Must have at least 1 bedroom' } })}
+          className="input"
+        />
+        {errors.bedrooms && <p className="text-red-500 text-sm">{errors.bedrooms.message}</p>}
+      </div>
+
+      {/* Bathrooms */}
+      <div>
+        <label className="block mb-1 font-medium">Bathrooms</label>
+        <input
+          type="number"
+          {...register('bathrooms', { required: 'Bathrooms required', min: { value: 1, message: 'Must have at least 1 bathroom' } })}
+          className="input"
+        />
+        {errors.bathrooms && <p className="text-red-500 text-sm">{errors.bathrooms.message}</p>}
+      </div>
+
+      {/* Location */}
+      <div>
+        <label className="block mb-1 font-medium">Location</label>
+        <input
+          type="text"
+          {...register('location', { required: 'Location is required' })}
+          className="input"
+        />
+        {errors.location && <p className="text-red-500 text-sm">{errors.location.message}</p>}
+      </div>
+
+      {/* Age */}
+      <div>
+        <label className="block mb-1 font-medium">Property Age (years)</label>
+        <input
+          type="number"
+          {...register('age', { required: 'Age is required', min: { value: 0, message: 'Age cannot be negative' } })}
+          className="input"
+        />
+        {errors.age && <p className="text-red-500 text-sm">{errors.age.message}</p>}
+      </div>
+
+      {/* Submit Button */}
+      <button type="submit" className="btn-primary w-full">
+        Predict Property Value
+      </button>
+    </form>
   );
 }

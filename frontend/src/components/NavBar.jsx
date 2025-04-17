@@ -1,78 +1,50 @@
-// /frontend/src/components/NavBar.jsx
-import React, { useState } from 'react';
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 export default function NavBar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
-  const handleScroll = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      setIsOpen(false); // Close mobile menu after click
-    }
-  };
+  const navLinks = [
+    { name: 'Home', path: '/' },
+    { name: 'Dashboard', path: '/dashboard' },
+    { name: 'About', path: '/about' },
+    { name: 'Contact', path: '/contact' }
+  ];
 
   return (
-    <nav className="bg-white dark:bg-gray-800 shadow fixed w-full z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          
-          {/* Logo */}
-          <div className="flex items-center">
-            <h1 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-              PropAI Nexus
-            </h1>
-          </div>
+    <nav className="bg-white dark:bg-gray-900 shadow-md transition-all duration-300">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 flex justify-between items-center">
+        
+        {/* Logo / Brand */}
+        <Link to="/" className="text-2xl font-extrabold text-blue-600 dark:text-blue-400 tracking-wide">
+          PropAI Nexus
+        </Link>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-6">
-            <button
-              onClick={() => handleScroll('prediction-form')}
-              className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition"
+        {/* Navigation Links */}
+        <div className="flex items-center gap-8">
+          {navLinks.map(link => (
+            <motion.div
+              key={link.path}
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.95 }}
+              className="relative"
             >
-              Property Value
-            </button>
-            <button
-              onClick={() => handleScroll('rental-yield-form')}
-              className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition"
-            >
-              Rental Yield
-            </button>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="flex items-center md:hidden">
-            <button onClick={() => setIsOpen(!isOpen)} className="text-gray-700 dark:text-gray-300 focus:outline-none">
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                {isOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
-            </button>
-          </div>
-          
+              <Link
+                to={link.path}
+                className={`text-md font-semibold ${
+                  location.pathname === link.path
+                    ? 'text-blue-600 dark:text-blue-400 underline underline-offset-4'
+                    : 'text-gray-700 dark:text-gray-300'
+                } hover:text-blue-500 dark:hover:text-blue-300 transition-colors duration-200`}
+              >
+                {link.name}
+              </Link>
+            </motion.div>
+          ))}
         </div>
+
       </div>
-
-      {/* Mobile Menu */}
-      {isOpen && (
-        <div className="md:hidden bg-white dark:bg-gray-800 px-2 pt-2 pb-3 space-y-1">
-          <button
-            onClick={() => handleScroll('prediction-form')}
-            className="block w-full text-left text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 py-2"
-          >
-            Property Value
-          </button>
-          <button
-            onClick={() => handleScroll('rental-yield-form')}
-            className="block w-full text-left text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 py-2"
-          >
-            Rental Yield
-          </button>
-        </div>
-      )}
     </nav>
   );
 }
