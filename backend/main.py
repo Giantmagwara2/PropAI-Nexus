@@ -10,6 +10,7 @@ from payments.stripe_payment import stripe_router
 from backend.api.routes.prediction import router as prediction_router
 from routes.rental import router as rental_router
 from backend.api.dashboard import router as dashboard_router  # Import the dashboard router
+from backend.routes.metrics import router as metrics_router
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -23,6 +24,7 @@ app.include_router(stripe_router, prefix="/api/payments")
 app.include_router(prediction_router, prefix="/api/predictions", tags=["Predictions"])
 app.include_router(rental_router, prefix="/api/rental", tags=["Rental Yield"])
 app.include_router(dashboard_router, prefix="/api/dashboard", tags=["Dashboard"])  # Include the dashboard router
+app.include_router(metrics_router, prefix="/api", tags=["Dashboard Metrics"])
 
 # Global Exception Handler for Internationalized Errors
 @app.exception_handler(Exception)

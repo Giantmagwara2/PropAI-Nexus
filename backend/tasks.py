@@ -1,20 +1,18 @@
 # /backend/tasks.py
 
-from db.session import SessionLocal
-from models.prediction_log import PredictionLog
+from backend.routes.metrics import metrics_agent
 
-def log_prediction(log_data: dict):
-    db = SessionLocal()
+async def log_prediction(data: dict):
     try:
-        log = PredictionLog(
-            input_data=log_data["input"],
-            predicted_value=log_data["output"],
-            currency=log_data.get("currency", "USD")
-        )
-        db.add(log)
-        db.commit()
+        output = data.get("output", {})
+
+        if "predicted_price" in output:
+            # Logging a property value prediction
+            metrics_agent.log_property_prediction(output["predicted_price"])
+
+        if "predicted_rental_yield_percent" in output:
+            # Logging a rental yield prediction
+            metrics_agent.log_rental_yield_prediction(output["predicted_rental_yield_percent"])
+
     except Exception as e:
-        db.rollback()
-        print(f"Logging failed: {str(e)}")
-    finally:
-        db.close()
+        print(f"Error logging prediction: {e}")
