@@ -1,64 +1,68 @@
-// /frontend/src/components/RentalYieldForm.jsx
-import React, { useState } from 'react';
-import usePrediction from '../hooks/usePrediction';
-import Loader from './Loader';
-import { notifySuccess, notifyError } from '../utils/toast';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { notifyError, notifySuccess } from '../lib/toast';
 
 export default function RentalYieldForm() {
-  const { data, loading, error, fetchPrediction } = usePrediction('/api/rental/yield');
-  const [formData, setFormData] = useState({
-    size: 0,
-    bedrooms: 0,
-    bathrooms: 0,
-    location: '',
-    age: 0,
-    country: 'US',
-    currency: 'USD',
-  });
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handlePredict = async () => {
-    try {
-      await fetchPrediction(formData);
-      notifySuccess('Rental yield prediction successful!');
-    } catch {
-      notifyError('Rental yield prediction failed!');
-    }
+  const onSubmit = (data) => {
+    console.log(data);
+    notifySuccess('Rental yield prediction submitted successfully!');
+    reset();
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded shadow-md mt-8">
-      <h2 className="text-2xl font-bold mb-4">Predict Rental Yield</h2>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 
-      <div className="space-y-4">
-        <input type="number" name="size" placeholder="Size (sq ft)" value={formData.size} onChange={handleChange} className="input" />
-        <input type="number" name="bedrooms" placeholder="Bedrooms" value={formData.bedrooms} onChange={handleChange} className="input" />
-        <input type="number" name="bathrooms" placeholder="Bathrooms" value={formData.bathrooms} onChange={handleChange} className="input" />
-        <input type="text" name="location" placeholder="Location" value={formData.location} onChange={handleChange} className="input" />
-        <input type="number" name="age" placeholder="Property Age" value={formData.age} onChange={handleChange} className="input" />
-        <input type="text" name="country" placeholder="Country (e.g., US)" value={formData.country} onChange={handleChange} className="input" />
-        <input type="text" name="currency" placeholder="Currency (e.g., USD)" value={formData.currency} onChange={handleChange} className="input" />
-
-        <button onClick={handlePredict} disabled={loading} className="btn-primary w-full">
-          {loading ? 'Predicting…' : 'Predict'}
-        </button>
-
-        {loading && <Loader />}
-
-        {data && (
-          <div className="mt-4 text-center">
-            <p className="text-lg font-semibold">
-              Predicted Rental Yield: {data.predicted_rental_yield_percent}%
-            </p>
-          </div>
-        )}
-
-        {error && notifyError(error)}
+      {/* Property Value */}
+      <div>
+        <label className="block mb-1 font-medium">Property Value (USD)</label>
+        <input
+          type="number"
+          {...register('property_value', { 
+            required: 'Property value is required',
+            min: { value: 1, message: 'Value must be greater than 0' }
+          })}
+          className="input"
+          placeholder="e.g. 250000"
+        />
+        {errors.property_value && <p className="text-red-500 text-sm">{errors.property_value.message}</p>}
       </div>
-    </div>
+
+      {/* Monthly Rent */}
+      <div>
+        <label className="block mb-1 font-medium">Monthly Rent (USD)</label>
+        <input
+          type="number"
+          {...register('monthly_rent', { 
+            required: 'Monthly rent is required',
+            min: { value: 1, message: 'Rent must be greater than 0' }
+          })}
+          className="input"
+          placeholder="e.g. 2000"
+        />
+        {errors.monthly_rent && <p className="text-red-500 text-sm">{errors.monthly_rent.message}</p>}
+      </div>
+
+      {/* Location */}
+      <div>
+        <label className="block mb-1 font-medium">Location</label>
+        <input
+          type="text"
+          {...register('location', { 
+            required: 'Location is required',
+            minLength: { value: 2, message: 'Location name too short' }
+          })}
+          className="input"
+          placeholder="e.g. New York, NY"
+        />
+        {errors.location && <p className="text-red-500 text-sm">{errors.location.message}</p>}
+      </div>
+
+      {/* Submit Button */}
+      <button type="submit" className="btn-primary w-full">
+        Predict Rental Yield
+      </button>
+    </form>
   );
 }
