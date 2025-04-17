@@ -249,9 +249,10 @@ motion-utils@^12.7.2:
   resolved "https://registry.yarnpkg.com/motion-utils/-/motion-utils-12.7.2.tgz#99b673d8851583b325bd0c8b0f04c5bf42b9b818"
   integrity sha512-XhZwqctxyJs89oX00zn3OGCuIIpVevbTa+u82usWBC6pSHUd2AoNWiYa7Du8tJxJy9TFbZ82pcn5t7NOm1PHAw==
 
-"nvm@https://github.com/nvm-sh/nvm.git":
-  version "0.40.2"
-  resolved "https://github.com/nvm-sh/nvm.git#99352a64d25ce27d49ff6a449663ce3d7c12e5b5"
+nvm@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/nvm/-/nvm-0.0.4.tgz#38a178e9d31b283508c92d15c9da861d1a9210bc"
+  integrity sha512-jvmyELykYcdyd0VCGY0E8Aqe5MngEasVvlPvrcJHbwBMUbVqa72mPdQuPzyTcykEtEx7jDrMY0QA5MoV+8EhgA==
 
 object-assign@^4.1.1:
   version "4.1.1"

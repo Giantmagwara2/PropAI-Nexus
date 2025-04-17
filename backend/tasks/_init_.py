@@ -10,6 +10,7 @@ __all__ = [
     "log_prediction",
 ]
 
+
 # Log file path
 LOG_FILE = Path("logs/predictions.log")
 LOG_FILE.parent.mkdir(parents=True, exist_ok=True)  # Ensure 'logs/' exists

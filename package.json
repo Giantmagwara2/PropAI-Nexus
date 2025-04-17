@@ -4,7 +4,7 @@
     "axios": "^1.8.4",
     "framer-motion": "^12.7.4",
     "i18next": "^24.2.3",
-    "nvm": "https://github.com/nvm-sh/nvm.git",
+    "nvm": "^0.0.4",
     "react-confetti": "^6.4.0",
     "react-i18next": "^15.4.1",
     "react-router-dom": "^7.5.0",
