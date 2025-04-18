@@ -1,31 +1,52 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import axios from 'axios';
-import { notifyError } from '../lib/toast';
+import useSWR from 'swr';
+import { fetchWithApiKey } from '../lib/api'; // We'll create this small helper
+
+// Define the fetcher function to use in SWR
+const fetcher = (url) => fetchWithApiKey(url).then((res) => res.json());
 
 export default function Dashboard() {
-  const [stats, setStats] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { data, error } = useSWR('/api/dashboard/metrics', fetcher, {
+    refreshInterval: 10000, // Auto-refresh every 10 seconds
+  });
 
-  useEffect(() => {
-    async function fetchStats() {
-      try {
-        const response = await axios.get('/api/dashboard/metrics');
-        setStats(response.data);
-      } catch (error) {
-        console.error('Dashboard metrics fetch error:', error);
-        notifyError('Failed to load dashboard metrics.');
-      } finally {
-        setLoading(false);
-      }
-    }
+  // Define the stats to display
+  const stats = [
+    { label: 'Total Properties Analyzed', value: data ? data.total_properties_analyzed : '...' },
+    { label: 'Total Estimated Value', value: data ? `$${data.total_estimated_value.toLocaleString()}` : '...' },
+    { label: 'Average Rental Yield', value: data ? `${data.average_rental_yield}%` : '...' },
+    { label: 'Active Predictions', value: data ? data.active_predictions : '...' },
+  ];
 
-    fetchStats();
-  }, []);
+  // Handle error state
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-center p-6">
+        <div>
+          <h1 className="text-3xl font-bold text-red-600 mb-4">Failed to load dashboard</h1>
+          <p className="text-gray-600 dark:text-gray-300">Please refresh or try again later.</p>
+        </div>
+      </div>
+    );
+  }
 
+  // Handle loading state
+  if (!data) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-center p-6">
+        <div>
+          <h1 className="text-3xl font-bold text-blue-600 mb-4">Loading Dashboard...</h1>
+          <p className="text-gray-600 dark:text-gray-300">Fetching real-time metrics...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Render the dashboard with stats
   return (
     <div className="min-h-screen p-6 md:p-10 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-
+      
       {/* Title */}
       <section className="text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-bold text-gray-800 dark:text-white mb-4">
@@ -37,75 +58,20 @@ export default function Dashboard() {
       </section>
 
       {/* Stats Section */}
-      {loading ? (
-        <div className="text-center text-gray-600 dark:text-gray-300">
-          Loading metrics...
-        </div>
-      ) : stats ? (
-        <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-          {/* Total Properties */}
+      <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+        {stats.map((stat, index) => (
           <motion.div
-            className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg text-center"
+            key={index}
+            className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition duration-300 text-center"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
+            transition={{ delay: index * 0.2 }}
           >
-            <h2 className="text-3xl font-bold text-blue-600 dark:text-blue-400">
-              {stats.total_properties?.toLocaleString() || 0}
-            </h2>
-            <p className="mt-2 text-gray-700 dark:text-gray-300">
-              Total Properties Analyzed
-            </p>
+            <h2 className="text-3xl font-bold text-blue-600 dark:text-blue-400">{stat.value}</h2>
+            <p className="mt-2 text-gray-700 dark:text-gray-300">{stat.label}</p>
           </motion.div>
-
-          {/* Total Estimated Value */}
-          <motion.div
-            className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg text-center"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <h2 className="text-3xl font-bold text-blue-600 dark:text-blue-400">
-              ${stats.total_estimated_value?.toLocaleString() || 0}
-            </h2>
-            <p className="mt-2 text-gray-700 dark:text-gray-300">
-              Total Estimated Value
-            </p>
-          </motion.div>
-
-          {/* Average Rental Yield */}
-          <motion.div
-            className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg text-center"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            <h2 className="text-3xl font-bold text-blue-600 dark:text-blue-400">
-              {stats.average_rental_yield?.toFixed(2) || 0}%
-            </h2>
-            <p className="mt-2 text-gray-700 dark:text-gray-300">
-              Average Rental Yield
-            </p>
-          </motion.div>
-
-          {/* Active Predictions */}
-          <motion.div
-            className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg text-center"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-          >
-            <h2 className="text-3xl font-bold text-blue-600 dark:text-blue-400">
-              {stats.active_predictions?.toLocaleString() || 0}
-            </h2>
-            <p className="mt-2 text-gray-700 dark:text-gray-300">
-              Active Predictions
-            </p>
-          </motion.div>
-        </section>
-      ) : (
-        <div className="text-center text-red-500">No data available.</div>
-      )}
+        ))}
+      </section>
     </div>
   );
 }
