@@ -2,18 +2,18 @@
 
 from .rental_yield_agent import RentalYieldAgent
 from .property_evaluator_agent import PropertyEvaluatorAgent
-from .dashboard_metrics_agent import DashboardMetricsAgent
-from .market_trends_agent import MarketTrendsAgent
-from .currency_conversion_agent import CurrencyConversionAgent
-from .prediction_logger_agent import PredictionLoggerAgent
-from .property_scoring_agent import PropertyScoringAgent
+from .api_metrics_agent import APIMetricsAgent
+from .lead_scoring_agent import LeadScoringAgent
+from .market_analysis_agent import MarketAnalysisAgent
+from .opportunity_finder_agent import OpportunityFinderAgent
+from .risk_assessment_agent import RiskAssessmentAgent
 
 __all__ = [
     "RentalYieldAgent",
     "PropertyEvaluatorAgent",
-    "DashboardMetricsAgent",
-    "MarketTrendsAgent",
-    "CurrencyConversionAgent",
-    "PredictionLoggerAgent",
-    "PropertyScoringAgent",
+    "APIMetricsAgent",
+    "LeadScoringAgent",
+    "MarketAnalysisAgent",
+    "OpportunityFinderAgent",
+    "RiskAssessmentAgent",
 ]

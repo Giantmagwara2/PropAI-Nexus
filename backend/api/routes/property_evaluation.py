@@ -1,7 +1,7 @@
 # api/routes/property_evaluation.py
 
 from flask import Blueprint, request, jsonify
-from src.data_merger import merge_property_data
+from services.data_merger_service import merge_property_data
 
 property_eval_api = Blueprint('property_eval_api', __name__)
 
